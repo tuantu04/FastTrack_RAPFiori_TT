@@ -199,9 +199,3 @@ App LROP (List Report Object Page) OData V4, template `sap.fe.templates`.
 - Implementing Treeviews (RAP): <https://help.sap.com/docs/abap-cloud/abap-rap/implementing-hierarchical-view>
 - Custom Entity / Query Provider: <https://developers.sap.com/tutorials/abap-environment-a4c-create-custom-entity.html>
 - Fiori Feature Showcase (RAP + FE): <https://github.com/SAP-samples/abap-platform-fiori-feature-showcase>
-
-**Tài liệu giảng dạy nội bộ** — `03.FastTrack_RAPFiori/RAP-Buoi3/`
-- `NEW_Buoi3_Annotation_Full.md` — giải thích annotation đầy đủ theo topic `_Txx`
-- `NEW_Annotation_UI_Cheatsheet.md` — cheat sheet annotation UI
-- `NEW_Buoi3_Coding.md`, `NEW_Kich_Ban_Day_RAP_Buoi3.md`, `Buoi3Slide.md` — kịch bản & slide
-- Solution multi-view tree table: `RAP-Buoi3-AddonTreeTable/Solution_MultiView_TreeTable.md`
