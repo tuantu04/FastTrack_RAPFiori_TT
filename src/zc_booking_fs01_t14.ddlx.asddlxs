@@ -1,0 +1,16 @@
+@Metadata.layer: #CORE
+annotate entity ZC_BOOKING_FS01 with
+{
+  // CONTACT QUICK VIEW:
+  // type #AS_CONTACT + value = association to the entity that carries the
+  // @Semantics.name/eMail/telephone/address annotations (ZI_CUSTOMER_FS01).
+  // Clicking the column opens a business-card popup with clickable
+  // mailto: / tel: links.
+  // We hang this extra column on CustomerName (hidden as a plain field in
+  // _T06, but still usable as an annotation anchor for the contact column).
+  @UI.lineItem: [{ 
+//  position: 25, type: #AS_CONTACT,
+//                   value: '_customer', 
+                   label: 'Contact' }]
+  CustomerName;
+}

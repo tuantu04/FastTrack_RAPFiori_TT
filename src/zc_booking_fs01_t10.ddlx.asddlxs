@@ -1,0 +1,32 @@
+@Metadata.layer: #CORE
+annotate entity ZC_BOOKING_FS01 with
+{
+  // T10.1 - CHECKBOX REPLACEMENT:
+  // The dropdown comes from a VH view that READS THE DOMAIN FIXED VALUES
+  // (ZI_CONFIRM_VH_FS01 over DDCDS_CUSTOMER_DOMAIN_VALUE/_T).
+  // The VH view carries @ObjectModel.resultSet.sizeCategory: #XS
+  // -> Fiori renders a 2-entry DROPDOWN (Confirmed / Not Confirmed).
+  // NOTE: in RAP a fixed-value domain alone does NOT create the dropdown -
+  //       the valueHelpDefinition below is REQUIRED.
+  @EndUserText.label: 'Confirmed'
+  @UI.lineItem:       [{ position: 60 }]
+  @UI.selectionField: [{ position: 50 }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: 'ZI_CONFIRM_VH_FS01',
+                                                 element: 'ConfirmFlag' },
+                                       useForValidation: true }]
+  ConfirmFlag;
+
+  // T10.1 - RADIO GROUP REPLACEMENT:
+  // 3 fixed values (Low/Medium/High) of domain ZD_PRIORITY_FS01 in ONE
+  // dropdown instead of 3 radio buttons.
+  // (Priority column itself is placed by _T07 with criticality colors;
+  //  here we only add filter + value help.)
+  @UI.selectionField: [{ position: 60 }]
+  @Consumption.filter.selectionType: #SINGLE  // Single Select Value
+  @Consumption.filter.defaultValue: '1'       // pre-filled when app opens ( Radio Button defualt )
+    @Consumption.filter.mandatory: true       // uncomment to force input ( at leaset 1 radiobutton choosen)
+  @Consumption.valueHelpDefinition: [{ entity: { name: 'ZI_PRIORITY_VH_FS01',
+                                                 element: 'Priority' },
+                                       useForValidation: true  }]
+  Priority;
+}
