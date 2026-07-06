@@ -187,6 +187,31 @@ App LROP (List Report Object Page) OData V4, template `sap.fe.templates`.
 
 ---
 ## 7. App Preview
+**Scope của Package Lớn** 
+
+<img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/2a64edf4-3c68-44c6-8d3a-64991016b22e" />
+
+<img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/5268541f-8c4c-450f-82fd-263d31616410" />
+
+<img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/e8a3e115-5009-47a1-a8c8-890d71c8f92d" />
+
+<img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/43ea0df7-d113-4677-b5ae-a60086d25743" />
+
+<img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/4480e007-dfd9-4f4a-ae65-8e50f050f9fb" />
+
+<img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/dce195a6-3e4e-4d68-b2ec-69cabbe03cfb" />
+
+
+**Scope của Package ZPK_RAP_TREE_FS01** 
+
+<img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/aa41344d-de97-4fa7-94c6-7ad50c9c24ec" />
+
+<img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/f6a75eec-8d63-4e1e-ba20-68d6583dc10d" />
+
+<img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/320568de-bb32-42ae-b6c3-0dcee5310565" />
+
+<img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/d5be75d5-1f52-4729-8464-18a8ec5e9eba" />
+
 
 
 ---
