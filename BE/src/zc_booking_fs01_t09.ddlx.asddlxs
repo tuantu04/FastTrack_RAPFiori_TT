@@ -32,6 +32,8 @@ annotate entity ZC_BOOKING_FS01 with
   // ----- assign fields into the field groups referenced above -----
   @UI.fieldGroup: [{ qualifier: 'BasicData', position: 10 }]
   BookingId;
+  @UI.fieldGroup: [{ qualifier: 'BasicData', position: 15 }]
+  CustomerId;
   @UI.fieldGroup: [{ qualifier: 'BasicData', position: 20 }]
   BookingDate;
   @UI.fieldGroup: [{ qualifier: 'BasicData', position: 30 }]
@@ -43,6 +45,11 @@ annotate entity ZC_BOOKING_FS01 with
   Priority;
   @UI.fieldGroup: [{ qualifier: 'StatusData', position: 30 }]
   ConfirmFlag;
+  @UI.fieldGroup: [{ qualifier: 'StatusData', position: 40 }]
+  CustomerRating;
+  @UI.fieldGroup: [{ qualifier: 'StatusData', position: 50 }]
+  CompletionPct;
+
 
   @EndUserText.label: 'Email'
   @UI.fieldGroup: [{ qualifier: 'CustomerData', position: 10 }]

@@ -1,0 +1,20 @@
+@Metadata.layer: #CORE
+annotate entity ZC_BOOKING_FS01 with
+{
+  // Actions được neo vào 1 field BẤT KỲ (nút vẫn hiện ở toolbar/header).
+  // Chọn CurrencyCode vì field này CHƯA bị khai @UI.lineItem / @UI.identification
+  // ở bất kỳ extension #CORE nào khác -> tránh lỗi "annotated twice in same layer".
+
+  // ---- List Report: nút trên toolbar bảng ----
+  @UI.lineItem: [
+    { type: #FOR_ACTION, dataAction: 'acceptBooking', label: 'Accept',   position: 10 },
+    { type: #FOR_ACTION, dataAction: 'cancelBooking', label: 'Cancel',   position: 20 },
+    { type: #FOR_ACTION, dataAction: 'applyDiscount', label: 'Discount', position: 30 } ]
+
+  // ---- Object Page: nút trên header ----
+  @UI.identification: [
+    { type: #FOR_ACTION, dataAction: 'acceptBooking', label: 'Accept',   position: 10 },
+    { type: #FOR_ACTION, dataAction: 'cancelBooking', label: 'Cancel',   position: 20 },
+    { type: #FOR_ACTION, dataAction: 'applyDiscount', label: 'Discount', position: 30 } ]
+  CurrencyCode;
+}
