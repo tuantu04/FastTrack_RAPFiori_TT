@@ -1,0 +1,60 @@
+@Metadata.layer: #CORE
+
+// Object Page header of the ITEM itself (opened when the user clicks
+// a row of the embedded Items table on the Booking Object Page)
+@UI.headerInfo: {
+  typeName:       'Booking Item',
+  typeNamePlural: 'Booking Items',
+  typeImageUrl:   'sap-icon://product',
+  title:       { type: #STANDARD, value: 'ItemId' },
+  description: { type: #STANDARD, value: 'ProductId' }
+}
+annotate entity ZC_BKITEM_FS01 with
+{
+  // SIMPLE Object Page pattern (contrast with the Booking header entity):
+  // one flat section rendering every field that carries @UI.identification.
+  // No #COLLECTION / field groups needed for a small child entity.
+  @UI.facet: [ { id: 'ItemData', purpose: #STANDARD,
+                 type: #IDENTIFICATION_REFERENCE,
+                 label: 'Item Data', position: 10 } ]
+
+  @EndUserText.label: 'Item'
+  @UI.lineItem:       [{ position: 10, importance: #HIGH }]
+  @UI.identification: [{ position: 10 }]
+  ItemId;
+
+  @EndUserText.label: 'Product'
+  @UI.lineItem:       [{ position: 20, importance: #HIGH }]
+  @UI.identification: [{ position: 20 }]
+  ProductId;
+
+  // Quantity + unit are rendered together in ONE column because of
+  // @Semantics.quantity.unitOfMeasure in the projection
+  // -> QuantityUnit does NOT need an own column
+  @EndUserText.label: 'Quantity'
+  @UI.lineItem:       [{ position: 30 }]
+  @UI.identification: [{ position: 30 }]
+  Quantity;
+
+  // Amount + currency: same pairing via @Semantics.amount.currencyCode
+  @EndUserText.label: 'Item Price'
+  @UI.lineItem:       [{ position: 40 }]
+  @UI.identification: [{ position: 40 }]
+  ItemPrice;
+
+  // Unit/currency columns hidden as standalone fields - their values are
+  // already displayed inside Quantity / ItemPrice (semantics pairing).
+  // They stay in the service for editing scenarios & the paired display.
+  @UI.hidden: true
+  QuantityUnit;
+
+  @UI.hidden: true
+  CurrencyCode;
+
+  // Technical timestamps: never show to end users
+  @UI.hidden: true
+  LastChangedAt;
+
+  @UI.hidden: true
+  LocalLastChangedAt;
+}

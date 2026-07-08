@@ -1,0 +1,8 @@
+@Metadata.layer: #CORE
+annotate entity ZC_BOOKING_FS01 with
+{
+  // MULTI-LINE TEXT: in edit mode Description becomes a TextArea
+  // (multiple rows) instead of a single-line Input - ideal for comments.
+  @UI.multiLineText: true
+  Description;
+}

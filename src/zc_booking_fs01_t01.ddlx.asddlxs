@@ -1,0 +1,37 @@
+@Metadata.layer: #CORE
+
+// T01 - Object Page header: title area of the detail page.
+// 'imageUrl' could point to an element containing a picture URL (see T16 note).
+@UI.headerInfo: {
+  typeName:       'Booking',
+  typeNamePlural: 'Bookings',
+  typeImageUrl:   'sap-icon://sales-order',
+  title:       { type: #STANDARD, value: 'BookingId' },
+  description: { type: #STANDARD, value: 'Description' }
+}
+annotate entity ZC_BOOKING_FS01 with
+{
+  // Basic table columns. 'importance' controls what survives on small screens:
+  // #HIGH always visible, #MEDIUM tablet+, #LOW desktop only.
+  @EndUserText.label: 'Booking ID'
+  @UI.lineItem:       [{ position: 10, importance: #HIGH }]
+  BookingId;
+
+  @EndUserText.label: 'Customer'
+  @UI.lineItem:       [{ position: 20, importance: #HIGH }]
+  CustomerId;
+
+  @EndUserText.label: 'Booking Date'
+  @UI.lineItem:       [{ position: 30 }]
+  BookingDate;
+
+  // Currency-amount column: right aligned + currency shown automatically
+  // because of @Semantics.amount.currencyCode in the projection
+  @EndUserText.label: 'Total Price'
+  @UI.lineItem:       [{ position: 50 }]
+  TotalPrice;
+
+  @EndUserText.label: 'Description'
+  @UI.lineItem:       [{ position: 90, importance: #LOW }]
+  Description;
+}
