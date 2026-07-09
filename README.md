@@ -167,7 +167,124 @@ App LROP (List Report Object Page) OData V4, template `sap.fe.templates`.
 
 ---
 
-## 5. Ba cách dựng Tree Table (bài học kiến trúc)
+## 5. Behavior / RAP Runtime (Lý thuyết)
+
+> Từ **Buổi 4**, base BO `Booking` được bổ sung **lớp Behavior** để chuyển từ *read-only* → **giao dịch** (Create / Update / Delete + Draft + Action). Behavior của `ZI_BOOKING_FS01` là **managed + draft + early numbering**. Phần Tree (mục 6) vẫn read-only.
+
+### 5.1 Runtime RAP — 2 pha
+
+```
+User → [INTERACTION PHASE: transactional buffer]  → SAVE/COMMIT →  [SAVE PHASE: DB]
+        numbering · feature control · determination                managed: framework tự ghi
+        · validation · action  (CHƯA vào DB)                       unmanaged: dev tự ghi (save_modified)
+```
+
+- **Interaction phase**: mọi thay đổi nằm trong *transactional buffer* (chưa xuống DB).
+- **Save phase**: đẩy buffer xuống DB.
+- ⚠️ **Quy tắc vàng**: KHÔNG gọi `COMMIT ENTITIES` / BAPI / Released API ở interaction phase → runtime dump `BEHAVIOR_ILLEGAL_STATEMENT`.
+
+### 5.2 Ba kiểu implementation
+
+| Kiểu | Khai BDEF | Ai ghi DB | Dùng cho |
+|---|---|---|---|
+| **Managed** | `managed implementation in class …` | Framework tự INSERT/UPDATE/DELETE | Bảng Z thuần (case Booking) |
+| **Managed + Unmanaged Save** | `managed … with unmanaged save` | Framework + `save_modified` | Wrap BAPI / Released API |
+| **Unmanaged** | `unmanaged implementation in class …` | Dev tự lo toàn bộ | Có sẵn persistence/BAPI legacy |
+
+### 5.3 Giải phẫu BDEF header (keyword)
+
+| Keyword | Ý nghĩa | Biến thể |
+|---|---|---|
+| `managed implementation in class … unique` | Framework lo CRUD; 1 pool class | `unmanaged …` |
+| `strict ( 2 )` | Mức kiểm cú pháp mới nhất (bắt buộc BTP/Cloud); cần cho extensibility & release API | `strict ( 1 )` (cũ) |
+| `with draft` | Bật draft cho cả BO | `with collaborative draft` |
+| `persistent table` | Bảng đích managed tự ghi | — |
+| `draft table` | Bảng shadow lưu nháp (ADT sinh bằng Ctrl+1) | — |
+| `lock master` | **Pessimistic lock** ở root | `lock dependent by _assoc` (child) |
+| `total etag` | Etag cấp cả cụm draft (root + con) | — |
+| `authorization master ( global, instance )` | Chủ phân quyền: global (theo thao tác) + instance (theo record) | `( global )` · `( instance )` · `dependent by _assoc` |
+| `etag master <field>` | **Optimistic lock** field mốc thời gian | `etag dependent by _assoc` |
+| `early numbering` | Cấp key ở interaction phase (`earlynumbering_create`) | managed UUID · external · `late numbering` |
+| `mapping for <table>` | Map CDS element ↔ cột DB (bỏ calculated field) | — |
+
+### 5.4 Field control · Operations · Association
+
+| Khai | Ý nghĩa |
+|---|---|
+| `field ( readonly )` | Chỉ đọc (key hệ cấp, admin field) |
+| `field ( readonly : update )` | Ghi lúc create, khoá lúc update |
+| `field ( mandatory )` / `( mandatory : create )` | Bắt buộc nhập (mọi lúc / chỉ create) |
+| `field ( features : instance )` | **Động** — readonly/mandatory/hidden theo record (`get_instance_features`) |
+| `field ( numbering : managed )` | Key auto UUID |
+| `field ( suppress )` | Ẩn field khỏi BO/OData |
+| `create; update; delete;` | Thao tác CRUD |
+| `association _child { create; with draft; }` | Cho tạo con lồng trong cha (deep create) + draft |
+
+### 5.5 Concurrency: Lock vs ETag
+
+| | **Lock (pessimistic)** | **ETag (optimistic)** |
+|---|---|---|
+| Từ khoá | `lock master` / `dependent by` | `etag master` / `total etag` |
+| Cơ chế | Giành trước: ai Edit trước giữ khoá | Kiểm lúc ghi: ghi sau bị chặn nếu dữ liệu đã đổi (→ 412) |
+| Áp dụng | Draft UI (exclusive lock) | Ghi trực tiếp OData/EML (`If-Match`) |
+
+### 5.6 Numbering (4 chiến lược)
+
+| Chiến lược | Keyword | Cấp key ở đâu | Hợp với |
+|---|---|---|---|
+| Managed (UUID) | `field ( numbering : managed )` | Framework sinh UUID | Key `sysuuid_x16` |
+| **Early internal** | `early numbering` | `earlynumbering_create` | **Semantic key** (BookingId char) |
+| Early external | `early numbering` | User nhập | ID do user đặt |
+| Late | `late numbering` | `adjust_numbers` (saver, save phase) | Key phụ thuộc hệ ngoài |
+
+> ⚠️ Handler `earlynumbering_create` **phải trả `mapped` cho MỌI instance** (kể cả lúc Activate draft key đã có → echo lại), nếu không dump `CX_CSP_ACT_RESPONSE`.
+
+### 5.7 Behavior Pool & Behavior Projection
+
+- **Behavior Pool** (`ZBP_I_BOOKING_FS01`): class chứa handler (auth, numbering, action…), viết ở tab **Local Types (CCIMP)**.
+- **Behavior Projection** (`define behavior for ZC_BOOKING_FS01`): từ năng lực BDEF gốc, **chọn cái nào lộ ra UI/OData** (`use create/update/delete`, `use action …`, `use draft`).
+
+### 5.8 Draft
+
+- 4 draft action **bắt buộc** khi `strict(2)` + draft: `Edit`, `Activate optimized`, `Discard`, `Resume`.
+- `draft determine action Prepare { }`: nơi chạy **validation trước khi Activate** (dùng với `Activate optimized`).
+- Vòng đời: Active ⇄ Draft (Edit/Create/Resume/Discard/Activate).
+
+### 5.9 Determination · Validation · Action
+
+| Loại | Khai BDEF | Handler | Trạng thái trong project |
+|---|---|---|---|
+| **Determination** | `determination … on modify/save` | `FOR DETERMINE ON …` | Roadmap (setInitialStatus, calcTotalPrice) |
+| **Validation** | `validation … on save` | `FOR VALIDATE ON SAVE` | Roadmap (validateCustomer, validateDates) → đưa vào `Prepare` |
+| **Action** | `action … result [1] $self` | `FOR MODIFY … FOR ACTION` | ✅ `acceptBooking`, `cancelBooking`, `applyDiscount(param)` |
+
+### 5.10 EML (Entity Manipulation Language)
+
+"SQL cho RAP BO" — thao tác qua Business Object (giữ nguyên lock/validation/determination/numbering).
+
+| Lệnh | Việc | Pha |
+|---|---|---|
+| `READ ENTITIES OF …` | Đọc từ BO | Interaction |
+| `MODIFY ENTITIES OF …` | Create/Update/Delete vào buffer | Interaction |
+| `COMMIT ENTITIES …` | Đẩy buffer xuống DB | Save (chỉ ngoài BO) |
+
+- Trong handler behavior: dùng `MODIFY/READ ENTITIES … IN LOCAL MODE` và **KHÔNG** `COMMIT` (framework lo).
+- Derived types: `%cid` (content id create), `%cid_ref` (nối con↔cha), `%tky` (= key + draft flag), `%param` (tham số action), `%is_draft`.
+
+### 5.11 Object Behavior trong package
+
+| Object | Loại | Vai trò |
+|---|---|---|
+| `ZI_BOOKING_FS01` / `ZI_BKITEM_FS01` | BDEF base | Managed + draft + early numbering; lock/auth/etag |
+| `ZBP_I_BOOKING_FS01` | Behavior Pool | `get_global_authorizations`, `get_instance_authorizations`, `earlynumbering_create`, action handlers |
+| `ZC_BOOKING_FS01` / `ZC_BKITEM_FS01` | BDEF projection | `use …` + `use draft` + `use action` |
+| `ZBOOKING_FS01_D` / `ZBKITEM_FS01_D` | Draft table | Lưu nháp (framework-managed) |
+| `ZA_BOOKING_DISC_FS01` | Abstract entity | Tham số cho action `applyDiscount` |
+| `ZC_BOOKING_FS01_T19` | Metadata Extension | `#FOR_ACTION` — nút Accept/Cancel/Discount trên UI |
+
+---
+
+## 6. Ba cách dựng Tree Table (bài học kiến trúc)
 
 | Nguồn | Tree thật? | Logic tự viết | Ghi chú |
 |---|---|---|---|
@@ -179,14 +296,14 @@ App LROP (List Report Object Page) OData V4, template `sap.fe.templates`.
 
 ---
 
-## 6. Cách chạy
+## 7. Cách chạy
 
 **Backend:** import repo (BE/) bằng abapGit vào ABAP Cloud/on-stack → activate → publish service binding `ZUI_BOOKING_V4`. Chạy `ZCL_BOOKING_DATA_GEN` để sinh dữ liệu mẫu.
 
 **Frontend:** trong `FE/` chạy `npm install` rồi `npm start` (UI5 tooling), hoặc deploy lên ABAP repository. App trỏ service `/sap/opu/odata4/sap/zui_booking_v4/srvd/sap/zsv_booking/0001/`.
 
 ---
-## 7. App Preview
+## 8. App Preview
 **Scope của Package Lớn** 
 
 <img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/2a64edf4-3c68-44c6-8d3a-64991016b22e" />
@@ -215,7 +332,7 @@ App LROP (List Report Object Page) OData V4, template `sap.fe.templates`.
 
 
 ---
-## 8. Tài liệu tham khảo
+## 9. Tài liệu tham khảo
 
 **SAP chính thức**
 - Fiori Elements OData V4: <https://ui5.sap.com/#/topic/03265b0408e2432c9571d6b3feb6b1fd>
