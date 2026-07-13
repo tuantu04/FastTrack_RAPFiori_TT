@@ -181,13 +181,13 @@
                 "/ZZBookingTree/@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
                     "type": "TreeTable",
-                    "hierarchyQualifier": "ZH_BOOKINGNODE_FS01"
+                    "hierarchyQualifier": "ZH_BOOKINGNODE_TT01"
                   }
                 },
                 "/ZZBookingTreeTF/@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
                     "type": "TreeTable",
-                    "hierarchyQualifier": "ZH_BOOKNODETF_FS01"
+                    "hierarchyQualifier": "ZH_BOOKNODETF_TT01"
                   }
                 }
               }

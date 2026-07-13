@@ -1,0 +1,43 @@
+@Metadata.layer: #CORE
+annotate entity ZC_BOOKING_TT01 with
+{
+  // RATING INDICATOR (stars):
+  // - dataPoint on the element itself; its qualifier = the ELEMENT NAME
+  //   -> referenced by facet targetQualifier 'CustomerRating' (_T09)
+  //   and by lineItem valueQualifier below.
+  // - targetValue 5 = maximum number of stars.
+  @EndUserText.label: 'Rating'
+  @UI.dataPoint: { title: 'Customer Rating',
+                   targetValue: 5,
+                   visualization: #RATING }
+  // Show the same dataPoint as a COLUMN: type #AS_DATAPOINT turns the
+  // plain number into star symbols inside the table.
+  @UI.lineItem: [{ position: 70, type: #AS_DATAPOINT,
+                   valueQualifier: 'CustomerRating', label: 'Rating' }]
+  CustomerRating;
+
+  // PROGRESS INDICATOR (bar 0..100%):
+  @EndUserText.label: 'Completion'
+  @UI.dataPoint: { title: 'Completion',
+                   targetValue: 100,
+                   visualization: #PROGRESS }
+  @UI.lineItem: [{ position: 80, type: #AS_DATAPOINT,
+                   valueQualifier: 'CompletionPct', label: 'Completion' }]
+  CompletionPct;
+
+  // KPI WITH THRESHOLD COLORING (no extra criticality field needed):
+  // criticalityCalculation lets the FRAMEWORK compute the color:
+  // #MINIMIZE = lower is better; <=5000 green, 5000..8000 yellow, >8000 red.
+  // Shown as a header tile via facet 'PriceHdr' (_T09).
+  // targetValue + minimumValue are MANDATORY if you enable the bullet
+  // micro chart of _T13 (SAP feature showcase: a bullet without target /
+  // minimum breaks rendering).
+  @UI.dataPoint: { title: 'Total Price',
+                   targetValue: 5000,
+                   minimumValue: 0,
+                   criticalityCalculation: {
+                     improvementDirection: #MINIMIZE,
+                     toleranceRangeHighValue: 5000,
+                     deviationRangeHighValue: 8000 } }
+  TotalPrice;
+}

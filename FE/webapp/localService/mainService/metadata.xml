@@ -133,7 +133,7 @@
                 <Property Name="CurrencyCode" Type="Edm.String" Nullable="false" MaxLength="5"/>
                 <Property Name="OverallStatus" Type="Edm.String" Nullable="false" MaxLength="1"/>
                 <Property Name="StatusCriticality" Type="Edm.Byte" Nullable="false"/>
-                <Property Name="__HierarchyPropertiesForZH_BOOKNODETF_FS01" Type="com.sap.gateway.srvd.zsv_booking.v0001.HierarchyPropertiesForZH_BOOKNODETF_FS01"/>
+                <Property Name="__HierarchyPropertiesForZH_BOOKNODETF_TT01" Type="com.sap.gateway.srvd.zsv_booking.v0001.HierarchyPropertiesForZH_BOOKNODETF_TT01"/>
                 <NavigationProperty Name="_Children" Type="Collection(com.sap.gateway.srvd.zsv_booking.v0001.ZZNodeChildType)"/>
                 <NavigationProperty Name="_Parent" Type="com.sap.gateway.srvd.zsv_booking.v0001.ZZBookingTreeTFType"/>
             </EntityType>
@@ -152,10 +152,10 @@
                 <Property Name="CurrencyCode" Type="Edm.String" Nullable="false" MaxLength="5"/>
                 <Property Name="OverallStatus" Type="Edm.String" Nullable="false" MaxLength="1"/>
                 <Property Name="StatusCriticality" Type="Edm.Byte" Nullable="false"/>
-                <Property Name="__HierarchyPropertiesForZH_BOOKINGNODE_FS01" Type="com.sap.gateway.srvd.zsv_booking.v0001.HierarchyPropertiesForZH_BOOKINGNODE_FS01"/>
+                <Property Name="__HierarchyPropertiesForZH_BOOKINGNODE_TT01" Type="com.sap.gateway.srvd.zsv_booking.v0001.HierarchyPropertiesForZH_BOOKINGNODE_TT01"/>
                 <NavigationProperty Name="_Parent" Type="com.sap.gateway.srvd.zsv_booking.v0001.ZZBookingTreeType"/>
             </EntityType>
-            <ComplexType Name="HierarchyPropertiesForZH_BOOKINGNODE_FS01">
+            <ComplexType Name="HierarchyPropertiesForZH_BOOKINGNODE_TT01">
                 <Property Name="NodeId" Type="Edm.String" Nullable="false"/>
                 <Property Name="DescendantCount" Type="Edm.Int64" Nullable="false"/>
                 <Property Name="LimitedDescendantCount" Type="Edm.Int64" Nullable="false"/>
@@ -163,7 +163,7 @@
                 <Property Name="DistanceFromRoot" Type="Edm.Int64" Nullable="false"/>
                 <Property Name="LimitedRank" Type="Edm.Int64" Nullable="false"/>
             </ComplexType>
-            <ComplexType Name="HierarchyPropertiesForZH_BOOKNODETF_FS01">
+            <ComplexType Name="HierarchyPropertiesForZH_BOOKNODETF_TT01">
                 <Property Name="NodeId" Type="Edm.String" Nullable="false"/>
                 <Property Name="DescendantCount" Type="Edm.Int64" Nullable="false"/>
                 <Property Name="LimitedDescendantCount" Type="Edm.Int64" Nullable="false"/>
@@ -197,7 +197,7 @@
                 </Annotation>
                 <Annotation Term="SAP__common.ValueListReferences">
                     <Collection>
-                        <String>../../../../srvd_f4/sap/zi_customer_fs01/0001;ps='srvd-zsv_booking-0001';va='com.sap.gateway.srvd.zsv_booking.v0001.et-zc_booking_fs01.customerid'/$metadata</String>
+                        <String>../../../../srvd_f4/sap/zi_customer_TT01/0001;ps='srvd-zsv_booking-0001';va='com.sap.gateway.srvd.zsv_booking.v0001.et-zc_booking_TT01.customerid'/$metadata</String>
                     </Collection>
                 </Annotation>
             </Annotations>
@@ -225,7 +225,7 @@
                 <Annotation Term="SAP__common.ValueListForValidation" String=""/>
                 <Annotation Term="SAP__common.ValueListReferences">
                     <Collection>
-                        <String>../../../../srvd_f4/sap/zi_booking_status_vh_fs01/0001;ps='srvd-zsv_booking-0001';va='com.sap.gateway.srvd.zsv_booking.v0001.et-zc_booking_fs01.overallstatus'/$metadata</String>
+                        <String>../../../../srvd_f4/sap/zi_booking_status_vh_TT01/0001;ps='srvd-zsv_booking-0001';va='com.sap.gateway.srvd.zsv_booking.v0001.et-zc_booking_TT01.overallstatus'/$metadata</String>
                     </Collection>
                 </Annotation>
                 <Annotation Term="SAP__common.ValueListWithFixedValues"/>
@@ -236,7 +236,7 @@
                 <Annotation Term="SAP__common.IsUpperCase"/>
                 <Annotation Term="SAP__common.ValueListReferences">
                     <Collection>
-                        <String>../../../../srvd_f4/sap/zi_confirm_vh_fs01/0001;ps='srvd-zsv_booking-0001';va='com.sap.gateway.srvd.zsv_booking.v0001.et-zc_booking_fs01.confirmflag'/$metadata</String>
+                        <String>../../../../srvd_f4/sap/zi_confirm_vh_TT01/0001;ps='srvd-zsv_booking-0001';va='com.sap.gateway.srvd.zsv_booking.v0001.et-zc_booking_TT01.confirmflag'/$metadata</String>
                     </Collection>
                 </Annotation>
                 <Annotation Term="SAP__common.ValueListWithFixedValues"/>
@@ -249,7 +249,7 @@
                 <Annotation Term="SAP__common.IsUpperCase"/>
                 <Annotation Term="SAP__common.ValueListReferences">
                     <Collection>
-                        <String>../../../../srvd_f4/sap/zi_priority_vh_fs01/0001;ps='srvd-zsv_booking-0001';va='com.sap.gateway.srvd.zsv_booking.v0001.et-zc_booking_fs01.priority'/$metadata</String>
+                        <String>../../../../srvd_f4/sap/zi_priority_vh_TT01/0001;ps='srvd-zsv_booking-0001';va='com.sap.gateway.srvd.zsv_booking.v0001.et-zc_booking_TT01.priority'/$metadata</String>
                     </Collection>
                 </Annotation>
                 <Annotation Term="SAP__common.ValueListWithFixedValues"/>
@@ -271,7 +271,7 @@
                 <Annotation Term="SAP__common.Label" String="City"/>
                 <Annotation Term="SAP__common.ValueListReferences">
                     <Collection>
-                        <String>../../../../srvd_f4/sap/zi_city_vh_fs01/0001;ps='srvd-zsv_booking-0001';va='com.sap.gateway.srvd.zsv_booking.v0001.et-zc_booking_fs01.customercity'/$metadata</String>
+                        <String>../../../../srvd_f4/sap/zi_city_vh_TT01/0001;ps='srvd-zsv_booking-0001';va='com.sap.gateway.srvd.zsv_booking.v0001.et-zc_booking_TT01.customercity'/$metadata</String>
                     </Collection>
                 </Annotation>
                 <Annotation Term="SAP__common.ValueListWithFixedValues"/>
@@ -924,7 +924,7 @@
             <Annotations Target="SAP__self.ZZBookingTreeTFType/CurrencyCode">
                 <Annotation Term="SAP__common.IsCurrency"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZZBookingTreeTFType/__HierarchyPropertiesForZH_BOOKNODETF_FS01">
+            <Annotations Target="SAP__self.ZZBookingTreeTFType/__HierarchyPropertiesForZH_BOOKNODETF_TT01">
                 <Annotation Term="SAP__core.Computed"/>
                 <Annotation Term="SAP__UI.HiddenFilter"/>
                 <Annotation Term="SAP__UI.Hidden"/>
@@ -963,7 +963,7 @@
                     <Record>
                         <PropertyValue Property="NonFilterableProperties">
                             <Collection>
-                                <PropertyPath>__HierarchyPropertiesForZH_BOOKNODETF_FS01</PropertyPath>
+                                <PropertyPath>__HierarchyPropertiesForZH_BOOKNODETF_TT01</PropertyPath>
                             </Collection>
                         </PropertyValue>
                     </Record>
@@ -972,7 +972,7 @@
                     <Record>
                         <PropertyValue Property="NonSortableProperties">
                             <Collection>
-                                <PropertyPath>__HierarchyPropertiesForZH_BOOKNODETF_FS01</PropertyPath>
+                                <PropertyPath>__HierarchyPropertiesForZH_BOOKNODETF_TT01</PropertyPath>
                             </Collection>
                         </PropertyValue>
                     </Record>
@@ -1003,7 +1003,7 @@
                         </PropertyValue>
                     </Record>
                 </Annotation>
-                <Annotation Term="SAP__hierarchy.RecursiveHierarchySupported" Qualifier="ZH_BOOKNODETF_FS01"/>
+                <Annotation Term="SAP__hierarchy.RecursiveHierarchySupported" Qualifier="ZH_BOOKNODETF_TT01"/>
             </Annotations>
             <Annotations Target="SAP__self.ZZBookingTreeTFType/_Parent">
                 <Annotation Term="SAP__common.ReferentialConstraint">
@@ -1017,7 +1017,7 @@
             </Annotations>
             <Annotations Target="SAP__self.ZZBookingTreeTFType">
                 <Annotation Term="SAP__common.Label" String="Booking Tree TF - Projection"/>
-                <Annotation Term="SAP__hierarchy.RecursiveHierarchyActions" Qualifier="ZH_BOOKNODETF_FS01">
+                <Annotation Term="SAP__hierarchy.RecursiveHierarchyActions" Qualifier="ZH_BOOKNODETF_TT01">
                     <Record>
                         <PropertyValue Property="ChangeSiblingForRootsSupported" Bool="false"/>
                     </Record>
@@ -1126,24 +1126,24 @@
                         <PropertyValue Property="Text" String="Table Function Tree"/>
                     </Record>
                 </Annotation>
-                <Annotation Term="SAP__aggregation.RecursiveHierarchy" Qualifier="ZH_BOOKNODETF_FS01">
+                <Annotation Term="SAP__aggregation.RecursiveHierarchy" Qualifier="ZH_BOOKNODETF_TT01">
                     <Record>
-                        <PropertyValue Property="NodeProperty" PropertyPath="__HierarchyPropertiesForZH_BOOKNODETF_FS01/NodeId"/>
+                        <PropertyValue Property="NodeProperty" PropertyPath="__HierarchyPropertiesForZH_BOOKNODETF_TT01/NodeId"/>
                         <PropertyValue Property="ParentNavigationProperty" NavigationPropertyPath="_Parent"/>
                     </Record>
                 </Annotation>
-                <Annotation Term="SAP__hierarchy.RecursiveHierarchy" Qualifier="ZH_BOOKNODETF_FS01">
+                <Annotation Term="SAP__hierarchy.RecursiveHierarchy" Qualifier="ZH_BOOKNODETF_TT01">
                     <Record>
                         <PropertyValue Property="ChildCount">
                             <Null/>
                         </PropertyValue>
-                        <PropertyValue Property="DescendantCount" Path="__HierarchyPropertiesForZH_BOOKNODETF_FS01/DescendantCount"/>
+                        <PropertyValue Property="DescendantCount" Path="__HierarchyPropertiesForZH_BOOKNODETF_TT01/DescendantCount"/>
                         <PropertyValue Property="ExternalKey">
                             <Null/>
                         </PropertyValue>
-                        <PropertyValue Property="LimitedDescendantCount" Path="__HierarchyPropertiesForZH_BOOKNODETF_FS01/LimitedDescendantCount"/>
-                        <PropertyValue Property="DistanceFromRoot" Path="__HierarchyPropertiesForZH_BOOKNODETF_FS01/DistanceFromRoot"/>
-                        <PropertyValue Property="DrillState" Path="__HierarchyPropertiesForZH_BOOKNODETF_FS01/DrillState"/>
+                        <PropertyValue Property="LimitedDescendantCount" Path="__HierarchyPropertiesForZH_BOOKNODETF_TT01/LimitedDescendantCount"/>
+                        <PropertyValue Property="DistanceFromRoot" Path="__HierarchyPropertiesForZH_BOOKNODETF_TT01/DistanceFromRoot"/>
+                        <PropertyValue Property="DrillState" Path="__HierarchyPropertiesForZH_BOOKNODETF_TT01/DrillState"/>
                         <PropertyValue Property="MatchedDescendantCount">
                             <Null/>
                         </PropertyValue>
@@ -1168,7 +1168,7 @@
             <Annotations Target="SAP__self.ZZBookingTreeType/CurrencyCode">
                 <Annotation Term="SAP__common.IsCurrency"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZZBookingTreeType/__HierarchyPropertiesForZH_BOOKINGNODE_FS01">
+            <Annotations Target="SAP__self.ZZBookingTreeType/__HierarchyPropertiesForZH_BOOKINGNODE_TT01">
                 <Annotation Term="SAP__core.Computed"/>
                 <Annotation Term="SAP__UI.HiddenFilter"/>
                 <Annotation Term="SAP__UI.Hidden"/>
@@ -1209,7 +1209,7 @@
                     <Record>
                         <PropertyValue Property="NonFilterableProperties">
                             <Collection>
-                                <PropertyPath>__HierarchyPropertiesForZH_BOOKINGNODE_FS01</PropertyPath>
+                                <PropertyPath>__HierarchyPropertiesForZH_BOOKINGNODE_TT01</PropertyPath>
                             </Collection>
                         </PropertyValue>
                     </Record>
@@ -1218,7 +1218,7 @@
                     <Record>
                         <PropertyValue Property="NonSortableProperties">
                             <Collection>
-                                <PropertyPath>__HierarchyPropertiesForZH_BOOKINGNODE_FS01</PropertyPath>
+                                <PropertyPath>__HierarchyPropertiesForZH_BOOKINGNODE_TT01</PropertyPath>
                             </Collection>
                         </PropertyValue>
                     </Record>
@@ -1248,11 +1248,11 @@
                         </PropertyValue>
                     </Record>
                 </Annotation>
-                <Annotation Term="SAP__hierarchy.RecursiveHierarchySupported" Qualifier="ZH_BOOKINGNODE_FS01"/>
+                <Annotation Term="SAP__hierarchy.RecursiveHierarchySupported" Qualifier="ZH_BOOKINGNODE_TT01"/>
             </Annotations>
             <Annotations Target="SAP__self.ZZBookingTreeType">
                 <Annotation Term="SAP__common.Label" String="Booking Tree - Projection"/>
-                <Annotation Term="SAP__hierarchy.RecursiveHierarchyActions" Qualifier="ZH_BOOKINGNODE_FS01">
+                <Annotation Term="SAP__hierarchy.RecursiveHierarchyActions" Qualifier="ZH_BOOKINGNODE_TT01">
                     <Record>
                         <PropertyValue Property="ChangeSiblingForRootsSupported" Bool="false"/>
                     </Record>
@@ -1308,24 +1308,24 @@
                         <PropertyValue Property="Text" String="Tree"/>
                     </Record>
                 </Annotation>
-                <Annotation Term="SAP__aggregation.RecursiveHierarchy" Qualifier="ZH_BOOKINGNODE_FS01">
+                <Annotation Term="SAP__aggregation.RecursiveHierarchy" Qualifier="ZH_BOOKINGNODE_TT01">
                     <Record>
-                        <PropertyValue Property="NodeProperty" PropertyPath="__HierarchyPropertiesForZH_BOOKINGNODE_FS01/NodeId"/>
+                        <PropertyValue Property="NodeProperty" PropertyPath="__HierarchyPropertiesForZH_BOOKINGNODE_TT01/NodeId"/>
                         <PropertyValue Property="ParentNavigationProperty" NavigationPropertyPath="_Parent"/>
                     </Record>
                 </Annotation>
-                <Annotation Term="SAP__hierarchy.RecursiveHierarchy" Qualifier="ZH_BOOKINGNODE_FS01">
+                <Annotation Term="SAP__hierarchy.RecursiveHierarchy" Qualifier="ZH_BOOKINGNODE_TT01">
                     <Record>
                         <PropertyValue Property="ChildCount">
                             <Null/>
                         </PropertyValue>
-                        <PropertyValue Property="DescendantCount" Path="__HierarchyPropertiesForZH_BOOKINGNODE_FS01/DescendantCount"/>
+                        <PropertyValue Property="DescendantCount" Path="__HierarchyPropertiesForZH_BOOKINGNODE_TT01/DescendantCount"/>
                         <PropertyValue Property="ExternalKey">
                             <Null/>
                         </PropertyValue>
-                        <PropertyValue Property="LimitedDescendantCount" Path="__HierarchyPropertiesForZH_BOOKINGNODE_FS01/LimitedDescendantCount"/>
-                        <PropertyValue Property="DistanceFromRoot" Path="__HierarchyPropertiesForZH_BOOKINGNODE_FS01/DistanceFromRoot"/>
-                        <PropertyValue Property="DrillState" Path="__HierarchyPropertiesForZH_BOOKINGNODE_FS01/DrillState"/>
+                        <PropertyValue Property="LimitedDescendantCount" Path="__HierarchyPropertiesForZH_BOOKINGNODE_TT01/LimitedDescendantCount"/>
+                        <PropertyValue Property="DistanceFromRoot" Path="__HierarchyPropertiesForZH_BOOKINGNODE_TT01/DistanceFromRoot"/>
+                        <PropertyValue Property="DrillState" Path="__HierarchyPropertiesForZH_BOOKINGNODE_TT01/DrillState"/>
                         <PropertyValue Property="MatchedDescendantCount">
                             <Null/>
                         </PropertyValue>

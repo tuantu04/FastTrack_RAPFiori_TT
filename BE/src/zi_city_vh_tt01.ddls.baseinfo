@@ -3,7 +3,7 @@
 {
 "FROM":
 [
-"ZSTATUS_TT01"
+"ZCUSTOMER_TT01"
 ],
 "ASSOCIATED":
 [],

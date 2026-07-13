@@ -58,9 +58,9 @@
         <edmx:Include Namespace="com.sap.gateway.srvd.zsv_booking.v0001" Alias="SAP__ParentService"/>
     </edmx:Reference>
     <edmx:DataServices>
-        <Schema Namespace="com.sap.gateway.srvd_f4.zi_customer_fs01.v0001" Alias="SAP__self">
+        <Schema Namespace="com.sap.gateway.srvd_f4.zi_customer_TT01.v0001" Alias="SAP__self">
             <Annotation Term="SAP__core.SchemaVersion" String="1.0.0"/>
-            <EntityType Name="ZI_CUSTOMER_FS01Type">
+            <EntityType Name="ZI_CUSTOMER_TT01Type">
                 <Key>
                     <PropertyRef Name="CustomerId"/>
                 </Key>
@@ -71,13 +71,13 @@
                 <Property Name="City" Type="Edm.String" Nullable="false" MaxLength="40"/>
             </EntityType>
             <EntityContainer Name="Container">
-                <EntitySet Name="ZI_CUSTOMER_FS01" EntityType="com.sap.gateway.srvd_f4.zi_customer_fs01.v0001.ZI_CUSTOMER_FS01Type"/>
+                <EntitySet Name="ZI_CUSTOMER_TT01" EntityType="com.sap.gateway.srvd_f4.zi_customer_TT01.v0001.ZI_CUSTOMER_TT01Type"/>
             </EntityContainer>
             <Annotations Target="SAP__ParentService.BookingSrvType/CustomerId">
                 <Annotation Term="SAP__common.ValueListMapping">
                     <Record>
                         <PropertyValue Property="Label" String="Customer - Interface View"/>
-                        <PropertyValue Property="CollectionPath" String="ZI_CUSTOMER_FS01"/>
+                        <PropertyValue Property="CollectionPath" String="ZI_CUSTOMER_TT01"/>
                         <PropertyValue Property="Parameters">
                             <Collection>
                                 <Record Type="SAP__common.ValueListParameterInOut">
@@ -102,7 +102,7 @@
                     </Record>
                 </Annotation>
             </Annotations>
-            <Annotations Target="SAP__self.ZI_CUSTOMER_FS01Type">
+            <Annotations Target="SAP__self.ZI_CUSTOMER_TT01Type">
                 <Annotation Term="SAP__common.Label" String="Customer - Interface View"/>
                 <Annotation Term="SAP__communication.Contact">
                     <Record>
@@ -140,7 +140,7 @@
                     </Record>
                 </Annotation>
             </Annotations>
-            <Annotations Target="SAP__self.Container/ZI_CUSTOMER_FS01">
+            <Annotations Target="SAP__self.Container/ZI_CUSTOMER_TT01">
                 <Annotation Term="SAP__capabilities.SearchRestrictions">
                     <Record>
                         <PropertyValue Property="Searchable" Bool="false"/>
@@ -217,10 +217,10 @@
                 <Annotation Term="SAP__capabilities.KeyAsSegmentSupported"/>
                 <Annotation Term="SAP__capabilities.AsynchronousRequestsSupported"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZI_CUSTOMER_FS01Type/Email">
+            <Annotations Target="SAP__self.ZI_CUSTOMER_TT01Type/Email">
                 <Annotation Term="SAP__communication.IsEmailAddress"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZI_CUSTOMER_FS01Type/Phone">
+            <Annotations Target="SAP__self.ZI_CUSTOMER_TT01Type/Phone">
                 <Annotation Term="SAP__communication.IsPhoneNumber"/>
             </Annotations>
         </Schema>

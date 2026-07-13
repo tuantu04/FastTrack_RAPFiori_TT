@@ -3,10 +3,12 @@
 {
 "FROM":
 [
-"ZSTATUS_TT01"
+"ZBKITEM_TT01"
 ],
 "ASSOCIATED":
-[],
+[
+"ZI_BOOKING_TT01"
+],
 "BASE":
 [],
 "ANNO_REF":

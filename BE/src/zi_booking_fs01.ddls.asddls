@@ -1,11 +1,11 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Booking - Interface View'
 @Metadata.ignorePropagatedAnnotations: true
-define root view entity ZI_BOOKING_FS01
-  as select from zbooking_fs01
-  composition [0..*] of zi_bkitem_fs01            as _bookingItem
-  association [0..1] to ZI_CUSTOMER_FS01          as _customer on $projection.CustomerId = _customer.CustomerId
-  association [0..1] to ZI_BOOKING_STATUS_VH_FS01 as _status   on $projection.OverallStatus = _status.OverallStatus
+define root view entity ZI_BOOKING_TT01
+  as select from zbooking_TT01
+  composition [0..*] of zi_bkitem_TT01            as _bookingItem
+  association [0..1] to ZI_CUSTOMER_TT01          as _customer on $projection.CustomerId = _customer.CustomerId
+  association [0..1] to ZI_BOOKING_STATUS_VH_TT01 as _status   on $projection.OverallStatus = _status.OverallStatus
 {
   key booking_id            as BookingId,
       customer_id           as CustomerId,

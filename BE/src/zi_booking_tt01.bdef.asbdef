@@ -1,0 +1,148 @@
+//===================== HEADER =====================
+// managed -> framework lo CRUD; unique = 1 pool class duy nhất cho BO.
+// Đổi tên class thoải mái theo convention: ZBP_[I]_[NAME] (ZBehaviorPool)
+managed implementation in class zbp_i_booking_TT01 unique;
+
+// strict(2) = mức kiểm cú pháp mới nhất (bắt buộc BTP/S4 Cloud).
+// -> ép tuân thủ syntax chuẩn, cấm cú pháp cũ; đảm bảo stable + extensibility;
+//    bắt buộc nếu muốn thêm validation/determination hoặc release API (contract C0/C1).
+strict ( 2 );
+
+// with draft = bật draft cho cả BO (Active <-> Draft: Edit/Create/Resume/Discard/Activate).
+with draft;
+//==================================================
+
+// Bắt đầu định nghĩa behavior cho root view - đặt alias
+define behavior for ZI_BOOKING_TT01 alias Booking            // alias <alias_name>
+
+// persistent table = bảng đích managed tự ghi. 1 câu EML chỉ ghi bảng của entity đó;
+// muốn ghi con (BookingItem) thì đi qua association/composition (deep create).
+persistent table zbooking_TT01
+
+// draft table = bảng shadow lưu nháp (sinh bằng Ctrl+1 trên tên bảng này).
+draft table zbooking_TT01_d
+
+// lock master = Pessimistic Lock (giành trước): khi Edit/Update framework tự đặt
+// exclusive lock -> chặn người khác sửa cùng lúc. Lock cấp ở interaction phase,
+// tự nhả khi COMMIT / rollback / hết LUW.  (biến thể child: lock dependent by ...)
+lock master
+
+// total etag = etag cấp root, dùng cho TOÀN CỤM draft (root + con). Cần khi bật draft.
+total etag LastChangedAt
+
+// authorization master ( global, instance ) = root là chủ phân quyền, kiểm CẢ 2 lớp:
+//   ( global )   -> handler get_global_authorizations   (theo thao tác C/U/D, không đọc record)
+//   ( instance ) -> handler get_instance_authorizations (theo từng record, dựa dữ liệu)
+// !!! Khai 'instance' thì BẮT BUỘC implement get_instance_authorizations, nếu không -> không activate.
+authorization master ( global, instance )
+
+// etag master = Optimistic Lock (kiểm lúc ghi): so field mốc thời gian client gửi lên
+// với DB; khác nhau -> ai đó sửa trước -> từ chối (412). Field phải là timestamp tự cập nhật
+// (@Semantics.systemDateTime.localInstanceLastChangedAt).  (biến thể child: etag dependent by ...)
+etag master LocalLastChangedAt
+
+// Numbering = cấp key KHI NÀO & thế nào:
+//   I. Interaction phase:
+//      1. Managed(UUID): field ( numbering : managed ) Key;  (framework sinh UUID, không handler)
+//      2. Early internal: early numbering -> earlynumbering_create (semantic key tự tăng) << case ta dùng
+//      3. Early external: early numbering (không sinh, user tự nhập ID)
+//   II. Save phase:
+//      4. Late: late numbering -> adjust_numbers (saver) (key phụ thuộc hệ ngoài / sequence lúc commit)
+early numbering                          // BookingId char(10) -> logic ở earlynumbering_create
+{
+  // Thao tác CRUD cơ bản của BO
+  create;
+  update;
+  delete;
+
+  // ---- Business actions (khai ở P5) ----
+  // instance action, result [1] $self -> trả lại chính bản ghi để UI refresh.
+  action acceptBooking result [1] $self;
+  action cancelBooking result [1] $self;
+  // action có tham số: đọc qua %param (abstract entity ZA_BOOKING_DISC_TT01)
+  action applyDiscount parameter ZA_BOOKING_DISC_TT01 result [1] $self;
+
+  // Field Control (static):
+  //   1. field ( readonly )          -> luôn read-only (key tự sinh, admin field...)
+  //   2. field ( readonly : update ) -> ghi được lúc create, khoá lúc update (case ItemId)
+  //   3. field ( mandatory )         -> bắt buộc nhập
+  //   4. field ( mandatory : create )-> chỉ bắt buộc lúc create
+  //   5. field ( features : instance)-> DYNAMIC theo record (handler get_instance_features) - Buổi 5
+  //   6. field ( numbering : managed)-> key auto UUID (chính là I.1 ở trên)
+  //   7. field ( suppress )          -> ẩn field khỏi BO/OData (khác với input param của action = abstract entity)
+  field ( readonly ) BookingId,
+  CreatedBy, CreatedAt, LastChangedBy, LastChangedAt, LocalLastChangedAt;
+  field ( mandatory ) CustomerId, BookingDate;
+
+  // Association tới con:
+  //   1. { create; }                          -> cho tạo con qua cha
+  //   2. { create; with draft; }               -> + hỗ trợ draft   << case ta dùng
+  //   3. { create ( features : instance ); }   -> cho tạo con có điều kiện (động)
+  //   (chiều ngược con->cha khai ở behavior child: association _bookingHeader;)
+  association _bookingItem { create; with draft; }   // tạo item lồng trong header
+
+  // ---- 4 draft action bắt buộc khi strict(2) + draft ----
+  draft action Edit;
+  // 'optimized' = lúc Activate TÁI DÙNG kết quả determination/validation đã chạy ở Prepare
+  //  -> HỆ QUẢ: mọi validation phải đặt trong 'Prepare', nếu không sẽ bị bỏ qua lúc Activate.
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+
+  // Prepare = nơi chạy validation trước khi Activate (Buổi 4 để rỗng, Buổi 5 nhồi validation vào)
+  draft determine action Prepare { }
+
+  // mapping CDS element -> cột bảng persistent
+  // (KHÔNG map StatusCriticality / PriorityCriticality vì là calculated field, không có cột thật)
+  mapping for zbooking_TT01
+    {
+      BookingId          = booking_id;
+      CustomerId         = customer_id;
+      BookingDate        = booking_date;
+      Description        = description;
+      TotalPrice         = total_price;
+      CurrencyCode       = currency_code;
+      OverallStatus      = overall_status;
+      ConfirmFlag        = confirm_flag;
+      Priority           = priority;
+      CustomerRating     = customer_rating;
+      CompletionPct      = completion_pct;
+      CreatedBy          = created_by;
+      CreatedAt          = created_at;
+      LastChangedBy      = last_changed_by;
+      LastChangedAt      = last_changed_at;
+      LocalLastChangedAt = local_last_changed_at;
+    }
+}
+
+//===================== CHILD: BookingItem =====================
+define behavior for zi_bkitem_TT01 alias BookingItem         // alias <alias_name>
+persistent table zbkitem_TT01
+draft table zbkitem_TT01_d
+lock dependent by _bookingHeader              // khoá con ĐI THEO khoá cha
+authorization dependent by _bookingHeader     // quyền con THỪA HƯỞNG từ cha -> KHÔNG cần handler riêng
+etag master LocalLastChangedAt                // item có timestamp riêng -> etag master hợp lệ
+{
+  update;
+  delete;
+  // (không khai 'create;' ở child: item được tạo qua association _bookingItem { create; } của cha)
+
+  field ( readonly ) BookingId;      // FK cha, hệ set
+  field ( readonly : update ) ItemId;         // nhập lúc create, khoá lúc update (chưa cấp numbering cho item)
+  field ( mandatory ) ProductId, Quantity;
+
+  association _bookingHeader { with draft; }  // chiều ngược con -> cha (bắt buộc để điều hướng + draft)
+
+  mapping for zbkitem_TT01
+    {
+      BookingId          = booking_id;
+      ItemId             = item_id;
+      ProductId          = product_id;
+      Quantity           = quantity;
+      QuantityUnit       = quantity_unit;
+      ItemPrice          = item_price;
+      CurrencyCode       = currency_code;
+      LastChangedAt      = last_changed_at;
+      LocalLastChangedAt = local_last_changed_at;
+    }
+}

@@ -58,22 +58,22 @@
         <edmx:Include Namespace="com.sap.gateway.srvd.zsv_booking.v0001" Alias="SAP__ParentService"/>
     </edmx:Reference>
     <edmx:DataServices>
-        <Schema Namespace="com.sap.gateway.srvd_f4.zi_city_vh_fs01.v0001" Alias="SAP__self">
+        <Schema Namespace="com.sap.gateway.srvd_f4.zi_city_vh_TT01.v0001" Alias="SAP__self">
             <Annotation Term="SAP__core.SchemaVersion" String="1.0.0"/>
-            <EntityType Name="ZI_CITY_VH_FS01Type">
+            <EntityType Name="ZI_CITY_VH_TT01Type">
                 <Key>
                     <PropertyRef Name="City"/>
                 </Key>
                 <Property Name="City" Type="Edm.String" Nullable="false" MaxLength="40"/>
             </EntityType>
             <EntityContainer Name="Container">
-                <EntitySet Name="ZI_CITY_VH_FS01" EntityType="com.sap.gateway.srvd_f4.zi_city_vh_fs01.v0001.ZI_CITY_VH_FS01Type"/>
+                <EntitySet Name="ZI_CITY_VH_TT01" EntityType="com.sap.gateway.srvd_f4.zi_city_vh_TT01.v0001.ZI_CITY_VH_TT01Type"/>
             </EntityContainer>
             <Annotations Target="SAP__ParentService.BookingSrvType/CustomerCity">
                 <Annotation Term="SAP__common.ValueListMapping">
                     <Record>
                         <PropertyValue Property="Label" String="City - Value Help (distinct)"/>
-                        <PropertyValue Property="CollectionPath" String="ZI_CITY_VH_FS01"/>
+                        <PropertyValue Property="CollectionPath" String="ZI_CITY_VH_TT01"/>
                         <PropertyValue Property="Parameters">
                             <Collection>
                                 <Record Type="SAP__common.ValueListParameterInOut">
@@ -85,10 +85,10 @@
                     </Record>
                 </Annotation>
             </Annotations>
-            <Annotations Target="SAP__self.ZI_CITY_VH_FS01Type">
+            <Annotations Target="SAP__self.ZI_CITY_VH_TT01Type">
                 <Annotation Term="SAP__common.Label" String="City - Value Help (distinct)"/>
             </Annotations>
-            <Annotations Target="SAP__self.Container/ZI_CITY_VH_FS01">
+            <Annotations Target="SAP__self.Container/ZI_CITY_VH_TT01">
                 <Annotation Term="SAP__capabilities.SearchRestrictions">
                     <Record>
                         <PropertyValue Property="Searchable" Bool="false"/>

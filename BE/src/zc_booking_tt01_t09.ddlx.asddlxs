@@ -1,0 +1,61 @@
+@Metadata.layer: #CORE
+annotate entity ZC_BOOKING_TT01 with
+{
+  @UI.facet: [
+    // ---------- HEADER AREA (purpose #HEADER) ----------
+    // Small KPI tiles at the top of the Object Page.
+    // Each one points to a @UI.dataPoint defined in file _T12
+    // (targetQualifier = element name carrying the dataPoint).
+    { id: 'RatingHdr',   purpose: #HEADER, type: #DATAPOINT_REFERENCE,
+      targetQualifier: 'CustomerRating', position: 10 },
+    { id: 'ProgressHdr', purpose: #HEADER, type: #DATAPOINT_REFERENCE,
+      targetQualifier: 'CompletionPct',  position: 20 },
+    { id: 'PriceHdr',    purpose: #HEADER, type: #DATAPOINT_REFERENCE,
+      targetQualifier: 'TotalPrice',     position: 30 },
+
+    // ---------- BODY SECTIONS (purpose #STANDARD) ----------
+    // One big collection section holding three field groups
+    { id: 'General',   purpose: #STANDARD, type: #COLLECTION,
+      label: 'General Information', position: 10 },
+
+    { id: 'BasicData', parentId: 'General', type: #FIELDGROUP_REFERENCE,
+      targetQualifier: 'BasicData',    label: 'Basic Data',       position: 10 },
+    { id: 'StatusData', parentId: 'General', type: #FIELDGROUP_REFERENCE,
+      targetQualifier: 'StatusData',   label: 'Status & Flags',   position: 20 },
+    { id: 'CustomerData', parentId: 'General', type: #FIELDGROUP_REFERENCE,
+      targetQualifier: 'CustomerData', label: 'Customer Contact', position: 30 },
+
+    // Child table (composition) embedded as its own section
+    { id: 'Items', purpose: #STANDARD, type: #LINEITEM_REFERENCE,
+      label: 'Items', position: 20, targetElement: '_bookingItem' } ]
+
+  // ----- assign fields into the field groups referenced above -----
+  @UI.fieldGroup: [{ qualifier: 'BasicData', position: 10 }]
+  BookingId;
+  @UI.fieldGroup: [{ qualifier: 'BasicData', position: 15 }]
+  CustomerId;
+  @UI.fieldGroup: [{ qualifier: 'BasicData', position: 20 }]
+  BookingDate;
+  @UI.fieldGroup: [{ qualifier: 'BasicData', position: 30 }]
+  Description;
+
+  @UI.fieldGroup: [{ qualifier: 'StatusData', position: 10 }]
+  OverallStatus;
+  @UI.fieldGroup: [{ qualifier: 'StatusData', position: 20 }]
+  Priority;
+  @UI.fieldGroup: [{ qualifier: 'StatusData', position: 30 }]
+  ConfirmFlag;
+  @UI.fieldGroup: [{ qualifier: 'StatusData', position: 40 }]
+  CustomerRating;
+  @UI.fieldGroup: [{ qualifier: 'StatusData', position: 50 }]
+  CompletionPct;
+
+
+  @EndUserText.label: 'Email'
+  @UI.fieldGroup: [{ qualifier: 'CustomerData', position: 10 }]
+  CustomerEmail; // mailto: link (semantics in projection)
+  // (label 'City' already set in _T03 - never repeat the same annotation
+  //  on the same field in two #CORE extensions)
+  @UI.fieldGroup: [{ qualifier: 'CustomerData', position: 20 }]
+  CustomerCity;
+}

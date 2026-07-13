@@ -14,10 +14,10 @@ CLASS zcl_booking_data_gen IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
-    DELETE FROM zstatus_fs01.
-    DELETE FROM zcustomer_fs01.
-    DELETE FROM zbooking_fs01.
-    DELETE FROM zbkitem_fs01.
+    DELETE FROM zstatus_TT01.
+    DELETE FROM zcustomer_TT01.
+    DELETE FROM zbooking_TT01.
+    DELETE FROM zbkitem_TT01.
 
 
 
@@ -25,7 +25,7 @@ CLASS zcl_booking_data_gen IMPLEMENTATION.
     " 1) STATUS TEXTS - source table for the value-help dropdown
     "    (case T10.2 - VH view with sizeCategory #XS)
     "============================================================
-    MODIFY zstatus_fs01 FROM TABLE @( VALUE #(
+    MODIFY zstatus_TT01 FROM TABLE @( VALUE #(
       ( status = 'N' status_text = 'New' )
       ( status = 'A' status_text = 'Accepted' )
       ( status = 'X' status_text = 'Cancelled' ) ) ).
@@ -34,7 +34,7 @@ CLASS zcl_booking_data_gen IMPLEMENTATION.
     "============================================================
     " 2) CUSTOMERS - phone added for the Contact Quick View (T14)
     "============================================================
-    MODIFY zcustomer_fs01 FROM TABLE @( VALUE #(
+    MODIFY zcustomer_TT01 FROM TABLE @( VALUE #(
       ( customer_id = 'C001' customer_name = 'Acme Corp'
         email = 'sales@acme.example'   city = 'Hanoi'
         phone = '+84 24 1234 5678' )
@@ -54,7 +54,7 @@ CLASS zcl_booking_data_gen IMPLEMENTATION.
     "    customer_rating -> rating stars 0..5      (T12)
     "    completion_pct  -> progress bar 0..100    (T12)
     "============================================================
-    MODIFY zbooking_fs01 FROM TABLE @( VALUE #(
+    MODIFY zbooking_TT01 FROM TABLE @( VALUE #(
       ( booking_id = 'BK0001' customer_id = 'C001' booking_date = '20260601'
         description = 'Hardware order'    total_price = '1500.00' currency_code = 'USD'
         overall_status = 'N' confirm_flag = 'N' priority = '2'
@@ -77,7 +77,7 @@ CLASS zcl_booking_data_gen IMPLEMENTATION.
     "============================================================
     " 4) ITEMS - unchanged structure, one extra row for BK0004
     "============================================================
-    MODIFY zbkitem_fs01 FROM TABLE @( VALUE #(
+    MODIFY zbkitem_TT01 FROM TABLE @( VALUE #(
       quantity_unit = 'EA'
       ( booking_id = 'BK0001' item_id = '0010' product_id = 'LAPTOP-14'   quantity = '5'  item_price = '200.00' currency_code = 'USD' )
       ( booking_id = 'BK0001' item_id = '0020' product_id = 'MOUSE'       quantity = '5'  item_price = '100.00' currency_code = 'USD' )
@@ -87,7 +87,7 @@ CLASS zcl_booking_data_gen IMPLEMENTATION.
     ) ).
     out->write( |Items modified: { sy-dbcnt } rows| ).
 
-    out->write( 'Demo data ready. Open ZI_BOOKING_FS01 > Data Preview (F8) to verify.' ).
+    out->write( 'Demo data ready. Open ZI_BOOKING_TT01 > Data Preview (F8) to verify.' ).
 
   ENDMETHOD.
 ENDCLASS.

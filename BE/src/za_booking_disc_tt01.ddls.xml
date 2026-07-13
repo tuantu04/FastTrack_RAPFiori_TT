@@ -3,10 +3,10 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <DDLS>
-    <DDLNAME>ZI_BOOKING_TT01</DDLNAME>
+    <DDLNAME>ZA_BOOKING_DISC_TT01</DDLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
-    <DDTEXT>Booking - Interface View</DDTEXT>
-    <SOURCE_TYPE>W</SOURCE_TYPE>
+    <DDTEXT>Booking Discount Parameter</DDTEXT>
+    <SOURCE_TYPE>A</SOURCE_TYPE>
    </DDLS>
   </asx:values>
  </asx:abap>

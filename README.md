@@ -16,7 +16,7 @@ FastTrack_RAPFiori/
 ├── BE/                   # ===== BACKEND (RAP / ABAP Cloud) =====
 │   └── src/              # toàn bộ ABAP repository objects (abapGit FOLDER_LOGIC = FULL)
 │       ├── <main package>            # base model + projection + MDE + value help + service
-│       └── zpk_rap_tree_fs01/        # sub-package: toàn bộ phần Tree Table (Buổi 3 add-on)
+│       └── zpk_rap_tree_TT01/        # sub-package: toàn bộ phần Tree Table (Buổi 3 add-on)
 └── FE/                   # ===== FRONTEND (Fiori Elements, SAPUI5) =====
     ├── package.json, ui5.yaml, ...   # UI5 tooling
     └── webapp/
@@ -40,43 +40,43 @@ BE dùng **abapGit FOLDER_LOGIC = FULL** ⇒ mỗi package ABAP = 1 thư mục c
 
 | Nhóm | Object | Ý nghĩa |
 |---|---|---|
-| **Database table** | `ZBOOKING_FS01`, `ZBKITEM_FS01`, `ZCUSTOMER_FS01`, `ZSTATUS_FS01` | Bảng dữ liệu: booking header, item, customer, status |
-| **Domain / Data element** | `ZD_CONFIRM_FS01`, `ZD_PRIORITY_FS01` (domain, fixed values) · `ZE_CONFIRM_FS01`, `ZE_PRIORITY_FS01` (data element) | Giá trị cố định cho Confirm/Priority (nguồn dropdown) |
-| **Interface CDS (base)** | `ZI_BOOKING_FS01` (root), `ZI_BKITEM_FS01` (composition child) | Mô hình dữ liệu lõi + association tới customer/status |
-| **Value-help CDS** | `ZI_CUSTOMER_FS01`, `ZI_BOOKING_STATUS_VH_FS01`, `ZI_CITY_VH_FS01`, `ZI_CONFIRM_VH_FS01`, `ZI_PRIORITY_VH_FS01` | Nguồn value help (F4) cho các field |
-| **Projection CDS** | `ZC_BOOKING_FS01`, `ZC_BKITEM_FS01` | View tiêu thụ (`provider contract transactional_query`) expose cho OData |
-| **Metadata Extension** | `ZC_BOOKING_FS01_T01..T17`, `ZC_BKITEM_FS01_T01` | Annotation UI tách theo chủ đề (mỗi `_Txx` = 1 topic: lineItem, facet, value help, criticality, chart…) |
+| **Database table** | `ZBOOKING_TT01`, `ZBKITEM_TT01`, `ZCUSTOMER_TT01`, `ZSTATUS_TT01` | Bảng dữ liệu: booking header, item, customer, status |
+| **Domain / Data element** | `ZD_CONFIRM_TT01`, `ZD_PRIORITY_TT01` (domain, fixed values) · `ZE_CONFIRM_TT01`, `ZE_PRIORITY_TT01` (data element) | Giá trị cố định cho Confirm/Priority (nguồn dropdown) |
+| **Interface CDS (base)** | `ZI_BOOKING_TT01` (root), `ZI_BKITEM_TT01` (composition child) | Mô hình dữ liệu lõi + association tới customer/status |
+| **Value-help CDS** | `ZI_CUSTOMER_TT01`, `ZI_BOOKING_STATUS_VH_TT01`, `ZI_CITY_VH_TT01`, `ZI_CONFIRM_VH_TT01`, `ZI_PRIORITY_VH_TT01` | Nguồn value help (F4) cho các field |
+| **Projection CDS** | `ZC_BOOKING_TT01`, `ZC_BKITEM_TT01` | View tiêu thụ (`provider contract transactional_query`) expose cho OData |
+| **Metadata Extension** | `ZC_BOOKING_TT01_T01..T17`, `ZC_BKITEM_TT01_T01` | Annotation UI tách theo chủ đề (mỗi `_Txx` = 1 topic: lineItem, facet, value help, criticality, chart…) |
 | **Service Definition** | `ZSV_BOOKING` (extensible) | `expose BookingSrv, BookingItemSrv` |
 | **Service Binding** | `ZUI_BOOKING_V4` | OData **V4 – UI**, publish endpoint |
 | **Helper class** | `ZCL_BOOKING_DATA_GEN` | Sinh dữ liệu mẫu |
 
-### 2.2 Sub-package `zpk_rap_tree_fs01` (Tree Table add-on — Buổi 3)
+### 2.2 Sub-package `zpk_rap_tree_TT01` (Tree Table add-on — Buổi 3)
 
 Toàn bộ phần cây tách riêng để không đụng base model.
 
 | Object | Loại | Vai trò |
 |---|---|---|
-| `ZI_BOOKINGNODE_BASE_FS01` | CDS view (union) | Gộp header + item thành **node phẳng** (NodeId/ParentNodeId), tính VAT/roll-up bằng SQL |
-| `ZI_BOOKINGNODE_FS01` | CDS view | Thêm **self-association `_Parent`** + annotation `@OData.hierarchy.recursiveHierarchy` |
-| `ZH_BOOKINGNODE_FS01` | `define hierarchy` | Định nghĩa parent-child hierarchy (nguồn CDS union) |
-| `ZC_BOOKINGNODE_FS01` (+ `.ddlx`) | Projection + MDE | Expose tree; UI lineItem; qualifier hierarchy = `ZH_BOOKINGNODE_FS01` |
-| `ZTF_BOOKINGNODE_FS01` | **CDS Table Function** | Nguồn node bằng SQLScript (join + VAT + roll-up + child count) |
+| `ZI_BOOKINGNODE_BASE_TT01` | CDS view (union) | Gộp header + item thành **node phẳng** (NodeId/ParentNodeId), tính VAT/roll-up bằng SQL |
+| `ZI_BOOKINGNODE_TT01` | CDS view | Thêm **self-association `_Parent`** + annotation `@OData.hierarchy.recursiveHierarchy` |
+| `ZH_BOOKINGNODE_TT01` | `define hierarchy` | Định nghĩa parent-child hierarchy (nguồn CDS union) |
+| `ZC_BOOKINGNODE_TT01` (+ `.ddlx`) | Projection + MDE | Expose tree; UI lineItem; qualifier hierarchy = `ZH_BOOKINGNODE_TT01` |
+| `ZTF_BOOKINGNODE_TT01` | **CDS Table Function** | Nguồn node bằng SQLScript (join + VAT + roll-up + child count) |
 | `ZCL_BOOKINGNODE_TF` | AMDP class | Cài đặt table function (`FOR TABLE FUNCTION`, LANGUAGE SQLSCRIPT) |
-| `ZI_BOOKNODETF_FS01` | CDS view | View trên table function + `_Parent` (self) + `_Children` (tới custom entity) + recursiveHierarchy |
-| `ZH_BOOKNODETF_FS01` | `define hierarchy` | Hierarchy cho nhánh table function |
-| `ZC_BOOKNODETF_FS01` | Projection | Expose tree (table function); facet Object Page (Node Details + Child Nodes) |
-| `ZCE_NODECHILD_FS01` | **Custom Entity** | Node con hiển thị trong Object Page (query provider tự viết) |
+| `ZI_BOOKNODETF_TT01` | CDS view | View trên table function + `_Parent` (self) + `_Children` (tới custom entity) + recursiveHierarchy |
+| `ZH_BOOKNODETF_TT01` | `define hierarchy` | Hierarchy cho nhánh table function |
+| `ZC_BOOKNODETF_TT01` | Projection | Expose tree (table function); facet Object Page (Node Details + Child Nodes) |
+| `ZCE_NODECHILD_TT01` | **Custom Entity** | Node con hiển thị trong Object Page (query provider tự viết) |
 | `ZCL_NODECHILD_QUERY` | Query class | `IF_RAP_QUERY_PROVIDER` — lọc theo `ParentNodeId`, đọc lại table function |
-| `ZC_BOOKING_FS01_T18` | MDE | `@UI.selectionVariant` cho tab List (multi-view) |
+| `ZC_BOOKING_TT01_T18` | MDE | `@UI.selectionVariant` cho tab List (multi-view) |
 | `ZESV_BOOKING_TREE` | **Service Extension** | `extend service ZSV_BOOKING` → expose `ZZBookingTree`, `ZZBookingTreeTF`, `ZZNodeChild` |
 
 ### 2.3 Data model
 
 ```
-ZI_BOOKING_FS01 (root)
-  ├─ composition [0..*] ZI_BKITEM_FS01        (Booking → Item)
-  ├─ association ZI_CUSTOMER_FS01              (customer text + F4)
-  └─ association ZI_BOOKING_STATUS_VH_FS01     (status text + F4)
+ZI_BOOKING_TT01 (root)
+  ├─ composition [0..*] ZI_BKITEM_TT01        (Booking → Item)
+  ├─ association ZI_CUSTOMER_TT01              (customer text + F4)
+  └─ association ZI_BOOKING_STATUS_VH_TT01     (status text + F4)
 
 Tree node set (union header+item):
   NodeId (H=BookingId / I=BookingId-ItemId), ParentNodeId, self _Parent → recursive hierarchy
@@ -86,11 +86,11 @@ Tree node set (union header+item):
 
 | Entity set | Nguồn | Dùng cho |
 |---|---|---|
-| `BookingSrv` | `ZC_BOOKING_FS01` | List Report (tab List) + Object Page |
-| `BookingItemSrv` | `ZC_BKITEM_FS01` | Object Page item |
-| `ZZBookingTree` | `ZC_BOOKINGNODE_FS01` | Tree Table (nguồn **CDS union**) |
-| `ZZBookingTreeTF` | `ZC_BOOKNODETF_FS01` | Tree Table (nguồn **Table Function**) + Object Page node |
-| `ZZNodeChild` | `ZCE_NODECHILD_FS01` | Child Nodes trong Object Page của tree TF |
+| `BookingSrv` | `ZC_BOOKING_TT01` | List Report (tab List) + Object Page |
+| `BookingItemSrv` | `ZC_BKITEM_TT01` | Object Page item |
+| `ZZBookingTree` | `ZC_BOOKINGNODE_TT01` | Tree Table (nguồn **CDS union**) |
+| `ZZBookingTreeTF` | `ZC_BOOKNODETF_TT01` | Tree Table (nguồn **Table Function**) + Object Page node |
+| `ZZNodeChild` | `ZCE_NODECHILD_TT01` | Child Nodes trong Object Page của tree TF |
 
 ---
 
@@ -102,8 +102,8 @@ App LROP (List Report Object Page) OData V4, template `sap.fe.templates`.
 
 - **List Report Multiple View (Multiple Table Mode)** — 1 trang, 3 tab chuyển bằng icon tab bar:
   1. **List** (`BookingSrv`) — GridTable phẳng.
-  2. **Tree** (`ZZBookingTree`) — TreeTable từ CDS hierarchy (`hierarchyQualifier: ZH_BOOKINGNODE_FS01`).
-  3. **TF Tree** (`ZZBookingTreeTF`) — TreeTable từ table function (`hierarchyQualifier: ZH_BOOKNODETF_FS01`).
+  2. **Tree** (`ZZBookingTree`) — TreeTable từ CDS hierarchy (`hierarchyQualifier: ZH_BOOKINGNODE_TT01`).
+  3. **TF Tree** (`ZZBookingTreeTF`) — TreeTable từ table function (`hierarchyQualifier: ZH_BOOKNODETF_TT01`).
 - **Filter bar**: value help (Customer/City/Status/Confirm/Priority), default value Priority, required field.
 - **Object Page Booking** → sub Object Page **Booking Item** (navigation qua `_bookingItem`).
 - **Object Page Tree Node** (`ZZBookingTreeTF`): section **Node Details** + section **Child Nodes** (lấy từ custom entity `ZZNodeChild`).
@@ -169,7 +169,7 @@ App LROP (List Report Object Page) OData V4, template `sap.fe.templates`.
 
 ## 5. Behavior / RAP Runtime (Lý thuyết)
 
-> Từ **Buổi 4**, base BO `Booking` được bổ sung **lớp Behavior** để chuyển từ *read-only* → **giao dịch** (Create / Update / Delete + Draft + Action). Behavior của `ZI_BOOKING_FS01` là **managed + draft + early numbering**. Phần Tree (mục 6) vẫn read-only.
+> Từ **Buổi 4**, base BO `Booking` được bổ sung **lớp Behavior** để chuyển từ *read-only* → **giao dịch** (Create / Update / Delete + Draft + Action). Behavior của `ZI_BOOKING_TT01` là **managed + draft + early numbering**. Phần Tree (mục 6) vẫn read-only.
 
 ### 5.1 Runtime RAP — 2 pha
 
@@ -241,8 +241,8 @@ User → [INTERACTION PHASE: transactional buffer]  → SAVE/COMMIT →  [SAVE P
 
 ### 5.7 Behavior Pool & Behavior Projection
 
-- **Behavior Pool** (`ZBP_I_BOOKING_FS01`): class chứa handler (auth, numbering, action…), viết ở tab **Local Types (CCIMP)**.
-- **Behavior Projection** (`define behavior for ZC_BOOKING_FS01`): từ năng lực BDEF gốc, **chọn cái nào lộ ra UI/OData** (`use create/update/delete`, `use action …`, `use draft`).
+- **Behavior Pool** (`ZBP_I_BOOKING_TT01`): class chứa handler (auth, numbering, action…), viết ở tab **Local Types (CCIMP)**.
+- **Behavior Projection** (`define behavior for ZC_BOOKING_TT01`): từ năng lực BDEF gốc, **chọn cái nào lộ ra UI/OData** (`use create/update/delete`, `use action …`, `use draft`).
 
 ### 5.8 Draft
 
@@ -275,12 +275,12 @@ User → [INTERACTION PHASE: transactional buffer]  → SAVE/COMMIT →  [SAVE P
 
 | Object | Loại | Vai trò |
 |---|---|---|
-| `ZI_BOOKING_FS01` / `ZI_BKITEM_FS01` | BDEF base | Managed + draft + early numbering; lock/auth/etag |
-| `ZBP_I_BOOKING_FS01` | Behavior Pool | `get_global_authorizations`, `get_instance_authorizations`, `earlynumbering_create`, action handlers |
-| `ZC_BOOKING_FS01` / `ZC_BKITEM_FS01` | BDEF projection | `use …` + `use draft` + `use action` |
-| `ZBOOKING_FS01_D` / `ZBKITEM_FS01_D` | Draft table | Lưu nháp (framework-managed) |
-| `ZA_BOOKING_DISC_FS01` | Abstract entity | Tham số cho action `applyDiscount` |
-| `ZC_BOOKING_FS01_T19` | Metadata Extension | `#FOR_ACTION` — nút Accept/Cancel/Discount trên UI |
+| `ZI_BOOKING_TT01` / `ZI_BKITEM_TT01` | BDEF base | Managed + draft + early numbering; lock/auth/etag |
+| `ZBP_I_BOOKING_TT01` | Behavior Pool | `get_global_authorizations`, `get_instance_authorizations`, `earlynumbering_create`, action handlers |
+| `ZC_BOOKING_TT01` / `ZC_BKITEM_TT01` | BDEF projection | `use …` + `use draft` + `use action` |
+| `ZBOOKING_TT01_D` / `ZBKITEM_TT01_D` | Draft table | Lưu nháp (framework-managed) |
+| `ZA_BOOKING_DISC_TT01` | Abstract entity | Tham số cho action `applyDiscount` |
+| `ZC_BOOKING_TT01_T19` | Metadata Extension | `#FOR_ACTION` — nút Accept/Cancel/Discount trên UI |
 
 ---
 
@@ -288,9 +288,9 @@ User → [INTERACTION PHASE: transactional buffer]  → SAVE/COMMIT →  [SAVE P
 
 | Nguồn | Tree thật? | Logic tự viết | Ghi chú |
 |---|---|---|---|
-| **CDS view (union)** — `ZC_BOOKINGNODE_FS01` | ✅ | Arithmetic/case/aggregate (SQL) | Đơn giản nhất, chạy mọi môi trường |
-| **CDS Table Function** — `ZC_BOOKNODETF_FS01` | ✅ | **SQLScript thủ tục** (join/VAT/roll-up) | Cần AMDP (on-prem / Private Edition / Embedded Steampunk) |
-| **Custom Entity** — `ZCE_NODECHILD_FS01` | ❌ (chỉ flat/list) | ABAP tự do | Hierarchy engine chạy SQL, không đọc được ABAP runtime → không tree; hợp cho list con trong Object Page hoặc nguồn remote |
+| **CDS view (union)** — `ZC_BOOKINGNODE_TT01` | ✅ | Arithmetic/case/aggregate (SQL) | Đơn giản nhất, chạy mọi môi trường |
+| **CDS Table Function** — `ZC_BOOKNODETF_TT01` | ✅ | **SQLScript thủ tục** (join/VAT/roll-up) | Cần AMDP (on-prem / Private Edition / Embedded Steampunk) |
+| **Custom Entity** — `ZCE_NODECHILD_TT01` | ❌ (chỉ flat/list) | ABAP tự do | Hierarchy engine chạy SQL, không đọc được ABAP runtime → không tree; hợp cho list con trong Object Page hoặc nguồn remote |
 
 > Điểm mấu chốt để tree hoạt động: entity **được expose** phải có (1) `@OData.hierarchy.recursiveHierarchy`, (2) expose **self-association `_Parent`**; manifest tab tree cần `tableSettings.type = "TreeTable"` + `hierarchyQualifier = <tên define hierarchy>` (đọc từ `$metadata`, term `Aggregation/Hierarchy.RecursiveHierarchy`).
 
@@ -319,7 +319,7 @@ User → [INTERACTION PHASE: transactional buffer]  → SAVE/COMMIT →  [SAVE P
 <img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/dce195a6-3e4e-4d68-b2ec-69cabbe03cfb" />
 
 
-**Scope của Package ZPK_RAP_TREE_FS01** 
+**Scope của Package ZPK_RAP_TREE_TT01** 
 
 <img width="1920" height="911" alt="image" src="https://github.com/user-attachments/assets/aa41344d-de97-4fa7-94c6-7ad50c9c24ec" />
 

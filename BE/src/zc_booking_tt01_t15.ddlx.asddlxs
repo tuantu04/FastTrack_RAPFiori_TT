@@ -1,0 +1,18 @@
+@Metadata.layer: #CORE
+
+// DEFAULT PRESENTATION of the list report (before the user changes anything):
+// - newest bookings first (BookingDate descending)
+// - 'visualizations' says: render the LineItem table (mandatory entry)
+// Try also: groupBy: ['CustomerId'] -> rows grouped per customer.
+@UI.presentationVariant: [{
+  sortOrder: [{ by: 'BookingDate', direction: #DESC }],
+  visualizations: [{ type: #AS_LINEITEM }]
+}]
+annotate entity ZC_BOOKING_TT01 with
+{
+  // (entity-level only - no element annotations needed in this file;
+  //  ABAP CDS requires at least one element in a metadata extension,
+  //  so we use a harmless label repetition)
+  @EndUserText.label: 'Currency'
+  CurrencyCode;
+}
