@@ -10,7 +10,7 @@ CLASS zcl_booking_data_gen_tt DEFINITION
 ENDCLASS.
 
 
-CLASS zcl_booking_data_gen IMPLEMENTATION.
+CLASS zcl_booking_data_gen_tt IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
