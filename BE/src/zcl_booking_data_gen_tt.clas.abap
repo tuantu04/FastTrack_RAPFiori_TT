@@ -1,4 +1,4 @@
-CLASS zcl_booking_data_gen DEFINITION
+CLASS zcl_booking_data_gen_tt DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC .
