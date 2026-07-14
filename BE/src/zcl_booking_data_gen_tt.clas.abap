@@ -1,4 +1,4 @@
-CLASS zcl_booking_data_gen_tt DEFINITION
+CLASS ZCL_BOOKING_DATA_GEN_TT DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC .
@@ -10,7 +10,7 @@ CLASS zcl_booking_data_gen_tt DEFINITION
 ENDCLASS.
 
 
-CLASS zcl_booking_data_gen_tt IMPLEMENTATION.
+CLASS ZCL_BOOKING_DATA_GEN_TT IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
